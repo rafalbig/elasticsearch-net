@@ -29,7 +29,7 @@ namespace Nest
 		public QueryContainer Query { get; set; }
 		public IInnerHits InnerHits { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.HasParent = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.HasParent = this;
 		internal static bool IsConditionless(IHasParentQuery q) => q.Query == null || q.Query.IsConditionless || q.Type == null;
 	}
 

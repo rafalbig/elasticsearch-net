@@ -30,7 +30,7 @@ namespace Nest
 		public Field Path { get; set; }
 		public IInnerHits InnerHits { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.Nested = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.Nested = this;
 		internal static bool IsConditionless(INestedQuery q) => q.Path == null || q.Query.IsConditionless();
 	}
 

@@ -35,7 +35,7 @@ namespace Nest
 		public QueryContainer NoMatchQuery { get; set; }
 		public Indices Indices { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.Indices = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.Indices = this;
 		internal static bool IsConditionless(IIndicesQuery q) => 
 			q.Indices == null || (q.NoMatchQuery.IsConditionless() && q.Query.IsConditionless());
 	}

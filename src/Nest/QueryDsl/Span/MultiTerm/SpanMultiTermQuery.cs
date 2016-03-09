@@ -16,7 +16,7 @@ namespace Nest
 		protected override bool Conditionless => IsConditionless(this);
 		public QueryContainer Match { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.SpanMultiTerm = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.SpanMultiTerm = this;
 		internal static bool IsConditionless(ISpanMultiTermQuery q) => q.Match == null || q.Match.IsConditionless;
 	}
 

@@ -20,7 +20,7 @@ namespace Nest
 		protected override bool Conditionless => IsConditionless(this);
 		public IEnumerable<QueryContainer> Filters { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.Not = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.Not = this;
 		internal static bool IsConditionless(INotQuery q)
 		{
 			return !q.Filters.HasAny() || q.Filters.All(f => f.IsConditionless);

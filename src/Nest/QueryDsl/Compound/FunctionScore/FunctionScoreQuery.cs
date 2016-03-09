@@ -37,7 +37,7 @@ namespace Nest
 		public double? MaxBoost { get; set; }
 		public double? MinScore { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.FunctionScore = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.FunctionScore = this;
 
 		internal static bool IsConditionless(IFunctionScoreQuery q, bool force = false) => 
 			force || !q.Functions.HasAny();

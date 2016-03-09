@@ -22,7 +22,7 @@ namespace Nest
 		public QueryContainer Query { get; set; }
 		public QueryContainer Filter { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.Filtered = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.Filtered = this;
 
 		internal static bool IsConditionless(IFilteredQuery q)
 		{

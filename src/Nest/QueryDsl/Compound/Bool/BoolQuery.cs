@@ -91,7 +91,7 @@ namespace Nest
 		/// </summary>
 		public bool? DisableCoord { get; set; }
 
-		internal override void WrapInContainer(IQueryContainer c) => c.Bool = this;
+		internal override void InternalWrapInContainer(IQueryContainer c) => c.Bool = this;
 
 		protected override bool Conditionless => IsConditionless(this);
 		internal static bool IsConditionless(IBoolQuery q)

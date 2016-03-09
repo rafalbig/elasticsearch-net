@@ -13,5 +13,9 @@
 
 		bool IQuery.Conditionless => this.Conditionless;
 		protected abstract bool Conditionless { get; }
+
+		// No need to implement fluent methods for these as they already defined on QueryContainerDescriptor level
+		bool IQuery.IsVerbatim { get; set; }
+		bool IQuery.IsStrict { get; set; }
 	}
 }

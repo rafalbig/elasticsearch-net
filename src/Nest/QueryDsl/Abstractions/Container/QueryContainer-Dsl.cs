@@ -46,8 +46,8 @@ namespace Nest
 		private static bool IfEitherIsEmptyReturnTheOtherOrEmpty(QueryContainer leftContainer, QueryContainer rightContainer, out QueryContainer queryContainer)
 		{
 			var combined = new[] {leftContainer, rightContainer};
-			var any = combined.Any(bf => bf == null || bf.IsConditionless);
-			queryContainer = any ? combined.FirstOrDefault(bf => bf != null && !bf.IsConditionless) : null;
+			var any = combined.Any(qc => qc == null || (qc.IsConditionless && !qc.IsVerbatim));
+			queryContainer = any ? combined.FirstOrDefault(qc => qc != null && (!qc.IsConditionless || qc.IsVerbatim)) : null;
 			return any;
 		}
 

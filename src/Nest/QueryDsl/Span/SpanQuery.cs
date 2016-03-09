@@ -39,6 +39,8 @@ namespace Nest
 	{
 		string IQuery.Name { get; set; }
 		double? IQuery.Boost { get; set; }
+		public bool IsVerbatim { get; set; }
+		public bool IsStrict { get; set; }
 		bool IQuery.Conditionless => IsConditionless(this);
 		public ISpanTermQuery SpanTerm { get; set; }
 		public ISpanFirstQuery SpanFirst { get; set; }
@@ -48,7 +50,6 @@ namespace Nest
 		public ISpanMultiTermQuery SpanMultiTerm { get; set; }
 		public ISpanContainingQuery SpanContaining{ get; set; }
 		public ISpanWithinQuery SpanWithin { get; set; }
-
 		public void Accept(IQueryVisitor visitor) => new QueryWalker().Walk(this, visitor);
 
 		internal static bool IsConditionless(ISpanQuery q) => new[]
