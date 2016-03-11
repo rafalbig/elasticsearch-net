@@ -92,10 +92,11 @@ namespace Tests.QueryDsl.TermLevel.Term
 		};
 
 		protected override QueryContainer QueryFluent(QueryContainerDescriptor<Project> q) => q
-			.Verbatim()
+			//.Verbatim()
 			.Bool(b => b
 				.Must(qt => qt
 					.Term(t => t
+						.Verbatim()
 						.Field(p => p.Description)
 						.Value("")
 					), qt => qt
@@ -105,6 +106,5 @@ namespace Tests.QueryDsl.TermLevel.Term
 					)
 				)
 			);
-
 	}
 }

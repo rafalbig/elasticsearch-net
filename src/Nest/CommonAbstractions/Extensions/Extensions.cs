@@ -41,7 +41,7 @@ namespace Nest
 			return null;
 		}
 
-		internal static bool IsNullOrConditionless(this QueryContainer c) => c == null || c.IsConditionless;
+		internal static bool IsNullOrConditionless(this QueryContainer c) => c == null || (c.IsConditionless && !c.IsVerbatim);
 
 		internal static string GetStringValue(this Enum enumValue)
 		{

@@ -37,7 +37,7 @@ namespace Nest
 
 			writer.WriteStartArray();
 			foreach (var queryContainer in collection)
-				if (queryContainer != null && (queryContainer.IsStrict || !queryContainer.IsConditionless))
+				if (queryContainer != null && (queryContainer.IsVerbatim || !queryContainer.IsConditionless))
 					serializer.Serialize(writer, queryContainer);
 			writer.WriteEndArray();
 		}

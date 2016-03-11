@@ -8,6 +8,14 @@ namespace Nest
 	[JsonObject(MemberSerialization.OptIn)]
 	public class QueryContainerDescriptor<T> : QueryContainer where T : class
 	{
+		public QueryContainerDescriptor() { }
+		private QueryContainerDescriptor(bool verbatim, bool strict)
+		{
+			IQueryContainer self = this;
+			self.IsVerbatim = verbatim;
+			self.IsStrict = strict;
+		}
+
 		QueryContainerDescriptor<T> Assign(Action<IQueryContainer> assigner) =>
 			Fluent.Assign<QueryContainerDescriptor<T>, IQueryContainer>(this, a =>
 			{
@@ -27,21 +35,20 @@ namespace Nest
 			where TQuery : class, TQueryInterface, IQuery, new()
 			where TQueryInterface : class, IQuery
 		{
-			var container = new QueryContainerDescriptor<T>();
-			IQueryContainer c = container;
-			c.IsStrict = this.IsStrict;
-			c.IsVerbatim = this.IsVerbatim;
-
 			var query = create.InvokeOrDefault(new TQuery());
+			var container = new QueryContainerDescriptor<T>(this.IsVerbatim, this.IsStrict);
+			IQueryContainer c = container;
+			c.IsStrict = this.IsStrict || query.IsStrict;
+			c.IsVerbatim = this.IsVerbatim || query.IsVerbatim;
 			assign(query, container);
 			container.ContainedQuery = query;
 
 			//if query is not conditionless or is verbatim: return a container that holds the query
-			if (!query.Conditionless || this.IsVerbatim)
+			if (!query.Conditionless || c.IsVerbatim)
 				return container;
 
 			//query is conditionless but the container is marked as strict, throw exception
-			if (this.IsStrict)
+			if (c.IsStrict)
 				throw new ArgumentException("Query is conditionless but strict is turned on");
 
 			//query is conditionless return an empty container that can later be rewritten

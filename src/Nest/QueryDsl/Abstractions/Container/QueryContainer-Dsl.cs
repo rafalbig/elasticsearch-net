@@ -4,7 +4,7 @@ namespace Nest
 {
 	internal static class QueryContainerExtensions
 	{
-		public static bool IsConditionless(this QueryContainer q) => q == null || q.IsConditionless;
+		public static bool IsConditionless(this QueryContainer q) => q == null || (q.IsConditionless && !q.IsVerbatim);
 	}
 
 	public partial class QueryContainer : IQueryContainer, IDescriptor
@@ -51,11 +51,11 @@ namespace Nest
 			return any;
 		}
 
-		public static QueryContainer operator !(QueryContainer queryContainer) => queryContainer == null || queryContainer.IsConditionless
+		public static QueryContainer operator !(QueryContainer queryContainer) => queryContainer == null || (queryContainer.IsConditionless && !queryContainer.IsVerbatim)
 			? null
 			: new QueryContainer(new BoolQuery {MustNot = new[] {queryContainer}});
 
-		public static QueryContainer operator +(QueryContainer queryContainer) => queryContainer == null || queryContainer.IsConditionless
+		public static QueryContainer operator +(QueryContainer queryContainer) => queryContainer == null || (queryContainer.IsConditionless && !queryContainer.IsVerbatim)
 			? null
 			: new QueryContainer(new BoolQuery {Filter = new[] {queryContainer}});
 

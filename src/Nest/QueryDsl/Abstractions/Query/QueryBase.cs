@@ -45,11 +45,11 @@ namespace Nest
 
 		public static QueryBase operator |(QueryBase leftQuery, QueryBase rightQuery) => Combine(leftQuery, rightQuery, (l,r) => l || r);
 
-		public static QueryBase operator !(QueryBase query) => query == null || ((IQuery)query).Conditionless
+		public static QueryBase operator !(QueryBase query) => query == null || (query.Conditionless && !query.IsVerbatim)
 			? null
 			: new BoolQuery { MustNot = new QueryContainer[] {query}};
 
-		public static QueryBase operator +(QueryBase query) => query == null || ((IQuery)query).Conditionless
+		public static QueryBase operator +(QueryBase query) => query == null || (query.Conditionless && !query.IsVerbatim)
 			? null
 			: new BoolQuery { Filter = new QueryContainer[] {query}};
 
