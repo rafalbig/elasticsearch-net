@@ -23,18 +23,22 @@ namespace Nest
 
 		[JsonIgnore]
 		bool IsStrict { get; set; }
+
+		[JsonIgnore]
+		bool IsWritable { get; }
 	}
-	
+
 	public abstract class QueryBase : IQuery
 	{
 		public string Name { get; set; }
 		public double? Boost { get; set; }
 		public bool IsVerbatim { get; set; }
 		public bool IsStrict { get; set; }
+		public bool IsWritable { get { return this.IsVerbatim || !this.Conditionless; } }
 
 		bool IQuery.Conditionless => this.Conditionless;
 		protected abstract bool Conditionless { get; }
-		
+
 		//always evaluate to false so that each side of && equation is evaluated
 		public static bool operator false(QueryBase a) => false;
 
@@ -73,13 +77,13 @@ namespace Nest
 		private static bool IfEitherIsEmptyReturnTheOtherOrEmpty(QueryBase leftQuery, QueryBase rightQuery, out QueryBase query)
 		{
 			var combined = new [] {leftQuery, rightQuery};
-			var any = combined.Any(q => q == null || (q.Conditionless && !q.IsVerbatim)); 
-			query = any ? combined.FirstOrDefault(bf => bf != null && (!bf.Conditionless || bf.IsVerbatim)) : null;
-			return any;
+			var anyEmpty = combined.Any(q => q == null || !q.IsWritable);
+			query = anyEmpty ? combined.FirstOrDefault(q => q != null && q.IsWritable) : null;
+			return anyEmpty;
 		}
 
 		public static implicit operator QueryContainer(QueryBase query) =>
-			query == null || (query.Conditionless && !query.IsVerbatim) ? null : new QueryContainer(query);
+			query == null || (!query.IsWritable) ? null : new QueryContainer(query);
 
 		internal void WrapInContainer(IQueryContainer container)
 		{

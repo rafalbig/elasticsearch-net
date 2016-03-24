@@ -28,7 +28,7 @@ namespace Nest
 	}
 
 	[Obsolete("Use the bool query instead.")]
-	public class AndQueryDescriptor<T> 
+	public class AndQueryDescriptor<T>
 		: QueryDescriptorBase<AndQueryDescriptor<T>, IAndQuery>
 		, IAndQuery where T : class
 	{
@@ -36,12 +36,12 @@ namespace Nest
 		IEnumerable<QueryContainer> IAndQuery.Filters { get; set; }
 
 		public AndQueryDescriptor<T> Filters(params Func<QueryContainerDescriptor<T>, QueryContainer>[] querySelectors) =>
-			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => !q.IsNullOrConditionless()).ToListOrNullIfEmpty());
+			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
 
 		public AndQueryDescriptor<T> Filters(IEnumerable<Func<QueryContainerDescriptor<T>, QueryContainer>> querySelectors) =>
-			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => !q.IsNullOrConditionless()).ToListOrNullIfEmpty());
+			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
 
-		public AndQueryDescriptor<T> Filters(params QueryContainer[] queries) => Assign(a => a.Filters = queries.Where(q => !q.IsNullOrConditionless()).ToListOrNullIfEmpty());
+		public AndQueryDescriptor<T> Filters(params QueryContainer[] queries) => Assign(a => a.Filters = queries.Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
 
 	}
 }

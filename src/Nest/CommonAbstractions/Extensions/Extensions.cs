@@ -29,8 +29,8 @@ namespace Nest
 			where T : class
 		{
 			var c = f.Invoke(container);
-			//if query is not conditionless or is verbatim: return a container that holds the query
-			if (c != null && (!c.IsConditionless || c.IsVerbatim))
+			//if query is writable (aka not conditionless or is verbatim): return a container that holds the query
+			if (c != null && c.IsWritable)
 				return c;
 
 			//query is conditionless but the container is marked as strict, throw exception
@@ -41,7 +41,7 @@ namespace Nest
 			return null;
 		}
 
-		internal static bool IsNullOrConditionless(this QueryContainer c) => c == null || (c.IsConditionless && !c.IsVerbatim);
+		internal static bool WritableAndNotNull(this QueryContainer c) => c != null && c.IsWritable;
 
 		internal static string GetStringValue(this Enum enumValue)
 		{
