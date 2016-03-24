@@ -50,7 +50,7 @@ namespace Nest
 		private static IQueryContainer Self(this QueryContainer q) => q;
 
 		private static bool HasOnlyShouldClauses(this IBoolQuery boolQuery) =>
-			boolQuery != null && (!boolQuery.Conditionless || boolQuery.IsVerbatim) &&  (
+			boolQuery != null && boolQuery.IsWritable &&  (
 				boolQuery.Should.HasAny()
 				&& !boolQuery.Must.HasAny()
 				&& !boolQuery.MustNot.HasAny()
@@ -58,7 +58,7 @@ namespace Nest
 			);
 
 		private static bool HasOnlyFilterClauses(this IBoolQuery boolQuery) =>
-			boolQuery != null && (!boolQuery.Conditionless || boolQuery.IsVerbatim) && !boolQuery.Locked && (
+			boolQuery != null && boolQuery.IsWritable && !boolQuery.Locked && (
 				!boolQuery.Should.HasAny()
 				&& !boolQuery.Must.HasAny()
 				&& !boolQuery.MustNot.HasAny()
@@ -66,7 +66,7 @@ namespace Nest
 			);
 
 		private static bool HasOnlyMustNotClauses(this IBoolQuery boolQuery) =>
-			boolQuery != null && (!boolQuery.Conditionless || boolQuery.IsVerbatim) && !boolQuery.Locked && (
+			boolQuery != null && boolQuery.IsWritable && !boolQuery.Locked && (
 				!boolQuery.Should.HasAny()
 				&& !boolQuery.Must.HasAny()
 				&& boolQuery.MustNot.HasAny()
