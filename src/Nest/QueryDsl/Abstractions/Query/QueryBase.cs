@@ -59,9 +59,9 @@ namespace Nest
 
 		private static QueryBase Combine(QueryBase leftQuery, QueryBase rightQuery, Func<QueryContainer, QueryContainer, QueryContainer> combine)
 		{
-			QueryBase q;
-			if (IfEitherIsEmptyReturnTheOtherOrEmpty(leftQuery, rightQuery, out q))
-				return q;
+			//QueryBase q;
+			//if (IfEitherIsEmptyReturnTheOtherOrEmpty(leftQuery, rightQuery, out q))
+			//	return q;
 
 			IQueryContainer container = combine(leftQuery, rightQuery);
 			var query = container.Bool;

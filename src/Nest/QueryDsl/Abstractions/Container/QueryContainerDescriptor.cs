@@ -8,8 +8,6 @@ namespace Nest
 	[JsonObject(MemberSerialization.OptIn)]
 	public class QueryContainerDescriptor<T> : QueryContainer where T : class
 	{
-		public QueryContainerDescriptor() { }
-
 		QueryContainerDescriptor<T> Assign(Action<IQueryContainer> assigner) =>
 			Fluent.Assign<QueryContainerDescriptor<T>, IQueryContainer>(this, a => assigner(a));
 
@@ -27,21 +25,12 @@ namespace Nest
 			var query = create.InvokeOrDefault(new TQuery());
 			var container = new QueryContainerDescriptor<T>();
 			IQueryContainer c = container;
-			c.IsStrict = this.IsStrict || query.IsStrict;
-			c.IsVerbatim = this.IsVerbatim || query.IsVerbatim;
+			c.IsVerbatim = query.IsVerbatim || this.IsVerbatim;
+			c.IsStrict = query.IsStrict || this.IsStrict;
 			assign(query, container);
 			container.ContainedQuery = query;
-
-			//if query is not conditionless or is verbatim: return a container that holds the query
-			if (!query.Conditionless || c.IsVerbatim)
-				return container;
-
-			//query is conditionless but the container is marked as strict, throw exception
-			if (c.IsStrict)
-				throw new ArgumentException("Query is conditionless but strict is turned on");
-
-			//query is conditionless return an empty container that can later be rewritten
-			return null;
+			new QueryWalker().Walk(container, new PropertyCascadingQueryVisitor(this));
+			return container;
 		}
 
 		/// <summary>

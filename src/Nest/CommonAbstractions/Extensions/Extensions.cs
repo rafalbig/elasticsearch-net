@@ -23,25 +23,11 @@ namespace Nest
 			where T1 : class, TReturn where TReturn : class =>
 			func?.Invoke(@default, param2) ?? @default;
 
+		// TODO kill this
 		internal static QueryContainer InvokeQuery<T>(
 			this Func<QueryContainerDescriptor<T>, QueryContainer> f,
 			QueryContainerDescriptor<T> container)
-			where T : class
-		{
-			var c = f.Invoke(container);
-			//if query is writable (aka not conditionless or is verbatim): return a container that holds the query
-			if (c != null && c.IsWritable)
-				return c;
-
-			//query is conditionless but the container is marked as strict, throw exception
-			if (c != null && c.IsStrict)
-				throw new ArgumentException("Query is conditionless but strict is turned on");
-
-			//query is conditionless return an empty container that can later be rewritten
-			return null;
-		}
-
-		internal static bool WritableAndNotNull(this QueryContainer c) => c != null && c.IsWritable;
+			where T : class => f.Invoke(container);
 
 		internal static string GetStringValue(this Enum enumValue)
 		{

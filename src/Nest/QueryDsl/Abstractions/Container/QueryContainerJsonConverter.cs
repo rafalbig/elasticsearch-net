@@ -10,13 +10,14 @@ namespace Nest
 		protected override void SerializeJson(JsonWriter writer, object value, IQueryContainer castValue, JsonSerializer serializer)
 		{
 			var rawQuery = castValue.RawQuery;
-			if (!rawQuery?.Raw.IsNullOrEmpty() ?? false)
+			if (!rawQuery?.Raw.IsNullOrEmpty() ?? false && rawQuery.IsWritable)
 			{
 				writer.WriteRawValue(rawQuery.Raw);
 				return;
 			}
 
-			base.SerializeJson(writer, value, castValue, serializer);
+			if (castValue.IsWritable)
+				base.SerializeJson(writer, value, castValue, serializer);
 		}
 	}
 
@@ -37,8 +38,7 @@ namespace Nest
 
 			writer.WriteStartArray();
 			foreach (var queryContainer in collection)
-				if (queryContainer != null && (queryContainer.IsVerbatim || !queryContainer.IsConditionless))
-					serializer.Serialize(writer, queryContainer);
+				serializer.Serialize(writer, queryContainer);
 			writer.WriteEndArray();
 		}
 

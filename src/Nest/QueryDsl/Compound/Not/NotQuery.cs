@@ -36,12 +36,12 @@ namespace Nest
 		IEnumerable<QueryContainer> INotQuery.Filters { get; set; }
 
 		public NotQueryDescriptor<T> Filters(params Func<QueryContainerDescriptor<T>, QueryContainer>[] querySelectors) =>
-			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
+			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q != null).ToListOrNullIfEmpty());
 
 		public NotQueryDescriptor<T> Filters(IEnumerable<Func<QueryContainerDescriptor<T>, QueryContainer>> querySelectors) =>
-			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
+			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q != null).ToListOrNullIfEmpty());
 
-		public NotQueryDescriptor<T> Filters(params QueryContainer[] queries) => Assign(a => a.Filters = queries.Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
+		public NotQueryDescriptor<T> Filters(params QueryContainer[] queries) => Assign(a => a.Filters = queries.Where(q => q != null).ToListOrNullIfEmpty());
 
 	}
 }

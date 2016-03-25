@@ -1033,6 +1033,7 @@
     <Compile Include="QueryDsl\TermLevel\Type\TypeQuery.cs" />
     <Compile Include="QueryDsl\TermLevel\Wildcard\WildcardQuery.cs" />
     <Compile Include="QueryDsl\VariableFields.cs" />
+    <Compile Include="QueryDsl\Visitor\PropertyCascadingQueryVisitor.cs" />
     <Compile Include="QueryDsl\Visitor\DslPrettyPrintVisitor.cs" />
     <Compile Include="QueryDsl\Visitor\QueryVisitor.cs" />
     <Compile Include="QueryDsl\Visitor\QueryWalker.cs" />

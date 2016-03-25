@@ -545,6 +545,7 @@
     <Compile Include="ClientConcepts\HighLevel\Inferrence\IndexNameInference.doc.cs" />
     <Compile Include="QueryDsl\QueryDslIntegrationTestsBase.cs" />
     <Compile Include="QueryDsl\TermLevel\Terms\TermsListQueryUsageTests.cs" />
+    <Compile Include="QueryDsl\VerbatimQueryUsageTests.cs" />
     <Compile Include="Search\Request\ProfileUsageTests.cs" />
     <Compile Include="Indices\StatusManagement\ForceMerge\ForceMergeApiTests.cs" />
     <Compile Include="Indices\StatusManagement\ForceMerge\ForceMergeUrlTests.cs" />

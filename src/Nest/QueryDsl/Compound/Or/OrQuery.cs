@@ -36,12 +36,12 @@ namespace Nest
 		IEnumerable<QueryContainer> IOrQuery.Filters { get; set; }
 
 		public OrQueryDescriptor<T> Filters(params Func<QueryContainerDescriptor<T>, QueryContainer>[] querySelectors) =>
-			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
+			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q != null).ToListOrNullIfEmpty());
 
 		public OrQueryDescriptor<T> Filters(IEnumerable<Func<QueryContainerDescriptor<T>, QueryContainer>> querySelectors) =>
-			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
+			Assign(a => a.Filters = querySelectors.Select(q => q?.InvokeQuery(new QueryContainerDescriptor<T>())).Where(q => q != null).ToListOrNullIfEmpty());
 
-		public OrQueryDescriptor<T> Filters(params QueryContainer[] queries) => Assign(a => a.Filters = queries.Where(q => q.WritableAndNotNull()).ToListOrNullIfEmpty());
+		public OrQueryDescriptor<T> Filters(params QueryContainer[] queries) => Assign(a => a.Filters = queries.Where(q => q != null).ToListOrNullIfEmpty());
 
 	}
 }

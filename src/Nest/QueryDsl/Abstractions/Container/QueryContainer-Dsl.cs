@@ -21,9 +21,7 @@ namespace Nest
 		bool IQueryContainer.IsVerbatim { get; set; }
 		internal bool IsVerbatim => Self.IsVerbatim;
 
-		public QueryContainer()
-		{
-		}
+		public QueryContainer() { }
 
 		public QueryContainer(QueryBase query) : this()
 		{
@@ -72,5 +70,4 @@ namespace Nest
 			new QueryWalker().Walk(this, visitor);
 		}
 	}
-
 }
