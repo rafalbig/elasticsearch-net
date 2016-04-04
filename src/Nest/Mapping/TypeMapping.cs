@@ -103,10 +103,12 @@ namespace Nest
 		/// <inheritdoc/>
 		public ISourceField SourceField { get; set; }
 		/// <inheritdoc/>
+		[Obsolete("Deprecated in 2.0.0-beta2. Instead, use a normal date field and set its value explicitly")]
 		public ITimestampField TimestampField { get; set; }
 		/// <inheritdoc/>
 		public IList<IMappingTransform> Transform { get; set; }
 		/// <inheritdoc/>
+		[Obsolete("Deprecated in 2.0.0-beta2. Will be replaced with a different implementation in a future version.")]
 		public ITtlField TtlField { get; set; }
 	}
 
@@ -202,18 +204,20 @@ namespace Nest
 		public TypeMappingDescriptor<T> RoutingField(Func<RoutingFieldDescriptor<T>, IRoutingField> routingFieldSelector) => Assign(a => a.RoutingField = routingFieldSelector?.Invoke(new RoutingFieldDescriptor<T>()));
 
 		/// <inheritdoc/>
+		[Obsolete("Deprecated in 2.0.0-beta2. Instead, use a normal date field and set its value explicitly")]
 		public TypeMappingDescriptor<T> TimestampField(Func<TimestampFieldDescriptor<T>, ITimestampField> timestampFieldSelector) => Assign(a => a.TimestampField = timestampFieldSelector?.Invoke(new TimestampFieldDescriptor<T>()));
 
 		/// <inheritdoc/>
 		public TypeMappingDescriptor<T> FieldNamesField(Func<FieldNamesFieldDescriptor<T>, IFieldNamesField> fieldNamesFieldSelector) => Assign(a => a.FieldNamesField = fieldNamesFieldSelector.Invoke(new FieldNamesFieldDescriptor<T>()));
 
 		/// <inheritdoc/>
+		[Obsolete("Deprecated in 2.0.0-beta2. Will be replaced with a different implementation in a future version.")]
 		public TypeMappingDescriptor<T> TtlField(Func<TtlFieldDescriptor, ITtlField> ttlFieldSelector) => Assign(a => a.TtlField = ttlFieldSelector?.Invoke(new TtlFieldDescriptor()));
 
 		/// <inheritdoc/>
 		public TypeMappingDescriptor<T> Meta(Func<FluentDictionary<string, object>, FluentDictionary<string, object>> metaSelector) => Assign(a => a.Meta = metaSelector(new FluentDictionary<string, object>()));
 
-		public TypeMappingDescriptor<T> Properties(Func<PropertiesDescriptor<T>, IPromise<IProperties>> propertiesSelector) => 
+		public TypeMappingDescriptor<T> Properties(Func<PropertiesDescriptor<T>, IPromise<IProperties>> propertiesSelector) =>
 			Assign(a => a.Properties = propertiesSelector?.Invoke(new PropertiesDescriptor<T>(Self.Properties))?.Value);
 
 		/// <inheritdoc/>
